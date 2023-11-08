@@ -1,0 +1,179 @@
+display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.7); /* Black background with some transparency */
+            padding: 20px;
+            border: 2px solid black; /* Black border around the container */
+            border-radius: 10px; /* Rounded corners */
+        }
+        .category {
+            margin: 10px;
+        }
+        .checkboxes {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        h1, h2, label {
+            color: white; /* White text color for headings and labels */
+        }
+        select, input {
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background for input elements */
+            color: white; /* White text color for input elements */
+            border: 1px solid white; /* White border for input elements */
+        }
+    </style>
+</head>
+<body>
+    <h1>Unit Quantity Calculator</h1>
+    <div class="container">
+        <div class="category">
+            <div id="infantry">
+                <label for="infantryInput">Infantry:</label>
+                <input type="text" id="infantryInput" value="0">
+            </div>
+
+            <div id="fighter">
+                <label for="fighterInput">Fighter:</label>
+                <input type="text" id="fighterInput" value="0">
+            </div>
+        </div>
+
+        <div class="category">
+            <div id="destroyer">
+                <label for="destroyerInput">Destroyer:</label>
+                <select id="destroyerInput" name="destroyerInput">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+
+            <div id="cruiser">
+                <label for="cruiserInput">Cruiser:</label>
+                <select id="cruiserInput" name="cruiserInput">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="category">
+            <div id="carrier">
+                <label for="carrierInput">Carrier:</label>
+                <select id="carrierInput" name="carrierInput">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+
+            <div id="dreadnaught">
+                <label for="dreadnaughtInput">Dreadnaught:</label>
+                <select id="dreadnaughtInput" name="dreadnaughtInput">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="category">
+            <div id="warsun">
+                <label for="warsunInput">War Sun:</label>
+                <select id="warsunInput" name="warsunInput">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+            </div>
+
+            <div id="flagship">
+                <label for="flagshipInput">Flagship:</label>
+                <select id="flagshipInput" name="flagshipInput">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="checkboxes">
+        <label for="sarweenToolsCheckbox">Sarween Tools:</label>
+        <input type="checkbox" id="sarweenToolsCheckbox">
+        
+        <label for="warMachineCheckbox">War Machine:</label>
+        <input type="checkbox" id="warMachineCheckbox">
+    </div>
+
+    <h2>Total Units Bought: <span id="totalUnitsBought">0</span></h2>
+    <h2>Total R/TGs: <span id="totalCost">0</span></h2>
+
+    <script>
+        // JavaScript code to handle input changes and calculate the total
+        const categoryCosts = {
+            "infantryInput": 1,
+            "fighterInput": 1,
+            "destroyerInput": 1,
+            "cruiserInput": 2,
+            "carrierInput": 3,
+            "dreadnaughtInput": 4,
+            "warsunInput": 12,
+            "flagshipInput": 8,
+            "mechInput": 2,
+        };
+
+        const totalUnitsElement = document.getElementById("totalUnitsBought");
+        const totalCostElement = document.getElementById("totalCost");
+        const sarweenToolsCheckbox = document.getElementById("sarweenToolsCheckbox");
+        const warMachineCheckbox = document.getElementById("warMachineCheckbox");
+
+        for (const inputId in categoryCosts) {
+            if (inputId !== "infantryInput") {
+                const input = document.getElementById(inputId);
+                input.addEventListener('change', updateTotal);
+            }
+        }
+
+        sarweenToolsCheckbox.addEventListener('change', updateTotal);
+        warMachineCheckbox.addEventListener('change', updateTotal);
+
+        function updateTotal() {
+            let totalUnitsBought = 0;
+            let totalCost = 0;
+
+            for (const inputId in categoryCosts) {
+                const quantity = parseInt(document.getElementById(inputId).value || 0);
+                totalUnitsBought += quantity;
+                totalCost += quantity * categoryCosts[inputId];
+            }
+            
+            if (sarweenToolsCheckbox.checked) {
+                totalCost -= totalUnitsBought;
+            }
+            if (warMachineCheckbox.checked) {
+                totalCost -= totalUnitsBought;
+            }
+
+            totalUnitsElement.textContent = totalUnitsBought;
+            totalCostElement.textContent = totalCost;
+        }
+    </script>
+</body>
+</html>
